@@ -32,7 +32,7 @@ public class Complaint {
     private ComplaintStatus status;
 
     @Column(nullable = false)
-    private Long userId;
+    private UUID userId;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+
+  auth-service:
+    build: ./Auth-Service
+    container_name: auth-service
+    ports:
+      - "8081:8080"
+    environment:
+      DB_URL: jdbc:mysql://host.docker.internal:3306/auth_db
+      DB_USER: root
+      DB_PASS: root
+      JWT_SECRET: mysecret
+      ACCESS_TOKEN_EXP: 900000
+    networks:
+      - micro-net
+
+  complaint-service:
+    build: ./Complaint-Service
+    container_name: complaint-service
+    ports:
+      - "8082:8080"
+    environment:
+      DB_URL: jdbc:mysql://host.docker.internal:3306/complaint_db
+      DB_USER: root
+      DB_PASS: root
+      AUTH_SERVICE_URL: http://auth-service:8080
+    depends_on:
+      - auth-service
+    networks:
+      - micro-net
+
+  admin-service:
+    build: ./admin-Service
+    container_name: admin-service
+    ports:
+      - "8083:8080"
+    environment:
+      DB_URL: jdbc:mysql://host.docker.internal:3306/admin_db
+      DB_USER: root
+      DB_PASS: root
+      AUTH_SERVICE_URL: http://auth-service:8080
+    depends_on:
+      - auth-service
+    networks:
+      - micro-net
+
+  api-gateway:
+    build: ./Api-Gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:8080
+      ADMIN_SERVICE_URL: http://admin-service:8080
+      COMPLAINT_SERVICE_URL: http://complaint-service:8080
+    depends_on:
+      - auth-service
+      - admin-service
+      - complaint-service
+    networks:
+      - micro-net
+
+networks:
+  micro-net:
+    driver: bridge
