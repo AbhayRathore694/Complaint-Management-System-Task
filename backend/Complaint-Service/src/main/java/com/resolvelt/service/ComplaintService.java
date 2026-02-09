@@ -19,30 +19,27 @@ public class ComplaintService {
         this.complaintRepository = complaintRepository;
     }
 
-    // CREATE complaint
-    public Complaint createComplaint(ComplaintRequest request) {
+    // ✅ CREATE COMPLAINT (JWT se aaya UUID use karo)
+    public Complaint createComplaint(ComplaintRequest request, UUID userId) {
+
         Complaint complaint = new Complaint();
         complaint.setTitle(request.getTitle());
         complaint.setDescription(request.getDescription());
-        complaint.setUserId(request.getUserId());
+
+        // 🔥 YAHI MAIN FIX
+        complaint.setUserId(userId);
+
         complaint.setStatus(ComplaintStatus.OPEN);
         complaint.setCreatedAt(LocalDateTime.now());
 
         return complaintRepository.save(complaint);
     }
 
-    // 🔥 GET complaints by USER ID (THIS WAS MISSING)
-    public List<Complaint> getComplaintsByUser(Long userId) {
+    // ✅ USER ke complaints (UUID)
+    public List<Complaint> getComplaintsByUser(UUID userId) {
         return complaintRepository.findByUserId(userId);
     }
 
-    // GET complaint by COMPLAINT ID (UUID)
-    public Complaint getComplaint(UUID id) {
-        return complaintRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Complaint not found"));
-    }
-
-    // GET all complaints (admin/internal)
     public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll();
     }

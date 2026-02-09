@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: admin-service   # naam hi pehchaan hai
+    name: ADMIN-SERVICE   # naam hi pehchaan hai
 
 eureka:
   client:
@@ -14,3 +14,6 @@ eureka:
 
   instance:
     prefer-ip-address: true
+jwt:
+  secret: resolvelt-super-secret-key-which-should-be-at-least-32-bytes
+  expiration: 864000

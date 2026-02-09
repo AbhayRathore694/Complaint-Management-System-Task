@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
 
-    List<Complaint> findByUserId(Long userId); // 🔥 REQUIRED
+    List<Complaint> findByUserId(UUID userId); // 🔥 REQUIRED
 }

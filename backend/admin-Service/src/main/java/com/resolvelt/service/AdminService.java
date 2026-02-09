@@ -22,20 +22,11 @@ public class AdminService {
         return complaintRepository.findAll();
     }
 
-    // ✅ UUID BASED
     public Complaint updateStatus(UUID id, ComplaintStatus status) {
         Complaint complaint = complaintRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Complaint not found"));
 
         complaint.setStatus(status);
         return complaintRepository.save(complaint);
-    }
-
-    public DashboardResponse getDashboard() {
-        return new DashboardResponse(
-                complaintRepository.countByStatus(ComplaintStatus.OPEN),
-                complaintRepository.countByStatus(ComplaintStatus.IN_PROGRESS),
-                complaintRepository.countByStatus(ComplaintStatus.RESOLVED)
-        );
     }
 }

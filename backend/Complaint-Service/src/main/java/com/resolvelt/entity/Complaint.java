@@ -23,7 +23,7 @@ public class Complaint {
     @Enumerated(EnumType.STRING)
     private ComplaintStatus status;
 
-    private Long userId;
+    private UUID userId;
 
     private LocalDateTime createdAt;
 }
