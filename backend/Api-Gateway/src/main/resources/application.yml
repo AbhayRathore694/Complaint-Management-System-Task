@@ -7,11 +7,32 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - https://complaint-management-system-task.vercel.app
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api/v1/auth/**
+
+        - id: auth-service-legacy
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
 
         - id: complaint-service
           uri: lb://COMPLAINT-SERVICE
